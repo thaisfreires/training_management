@@ -1,0 +1,30 @@
+Employee: Beatriz Gonçalves
+Department: Sales
+Suggested Training Courses: 
+1. Sales Mastery
+2. Customer Service Excellence
+3. Negotiation Skills
+Based on the department and role, I'll make an assumption on the best training courses for Isabel Almeida.
+
+Employee: Isabel Almeida
+Department: Customer Support
+Suggested Training Courses: 
+1. Customer Service Skills
+2. Communication and Interpersonal Skills
+3. Conflict Resolution and Negotiation
+Here is the suggested training courses for Miguel Rodrigues:
+
+Employee: Miguel Rodrigues
+Department: Operations
+Suggested Training Courses: 
+1. Lean Process and Six Sigma
+2. Supply Chain Management
+3. Root Cause Analysis and Problem Solving
+Based on the department, I assume the best training courses for Sofia Pereira are:
+
+    Employee: Sofia Pereira
+    Department: Finance
+    Suggested Training Courses: 
+    1. Financial Analysis and Planning
+    2. Budgeting and Cost Management
+    3. Advanced Excel for Financial Professionals

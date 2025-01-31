@@ -1,0 +1,32 @@
+Based on the employee's department, I'll suggest the following training courses:
+
+Employee: Beatriz Gonçalves
+Department: Sales
+Suggested Training Courses:
+1. Sales Mastery
+2. Effective Communication
+3. Building Customer Relationships
+Based on the department and job function, here is a suggested training course list for Isabel Almeida:
+
+Employee: Isabel Almeida
+Department: Customer Support
+Suggested Training Courses: 
+1. Customer Service Skills
+2. Communication and Interpersonal Skills
+3. Conflict Resolution and Negotiation
+Based on the department of the employee, I assume the best training courses for Miguel Rodrigues would be:
+
+    Employee: Miguel Rodrigues
+    Department: Operations
+    Suggested Training Courses: 
+    1. Lean Process and Six Sigma
+    2. Supply Chain Management
+    3. Project Management Fundamentals
+Based on the department and job function, here are my suggestions:
+
+Employee: Sofia Pereira
+Department: Finance
+Suggested Training Courses: 
+1. Financial Analysis and Modeling
+2. Financial Reporting and Compliance
+3. Budgeting and Forecasting

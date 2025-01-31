@@ -1,0 +1,506 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Flask API Documentation",
+    "description": "API for managing courses, entities, areas, and files.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5173"
+    },
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/courses": {
+      "get": {
+        "summary": "Get all courses",
+        "tags": [
+          "Courses"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of courses successfully returned"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new course",
+        "tags": [
+          "Courses"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Course"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course successfully added"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/courses/{id}": {
+      "get": {
+        "summary": "Get a course by ID",
+        "tags": [
+          "Courses"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course found"
+          },
+          "404": {
+            "description": "Course not found"
+          }
+        }
+      }
+    },
+    "/courses/update/{id}": {
+      "put": {
+        "summary": "Update a course information",
+        "tags": [
+          "Courses"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Course"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course successfully updated"
+          },
+          "500": {
+            "description": "Failed to update course"
+          }
+        }
+      }
+    },
+    "/courses/delete/{id}": {
+      "delete": {
+        "summary": "Delete a course by ID",
+        "tags": [
+          "Courses"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course successfully deleted"
+          },
+          "500": {
+            "description": "Failed to delete course"
+          }
+        }
+      }
+    },
+    "/entities": {
+      "get": {
+        "summary": "Get all entities",
+        "tags": [
+          "Entities"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of entities successfully returned"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new entity",
+        "tags": [
+          "Entities"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Entity"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity successfully added"
+          },
+          "400": {
+            "description": "Missing required field: name"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/area": {
+      "get": {
+        "summary": "Get all department areas",
+        "tags": [
+          "Area"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of areas successfully returned"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new department area",
+        "tags": [
+          "Area"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Area"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Area successfully added"
+          },
+          "400": {
+            "description": "Missing required field: name"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/location": {
+      "get": {
+        "summary": "Get all locations",
+        "tags": [
+          "Location"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of locations successfully returned"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new location",
+        "tags": [
+          "Location"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Location"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Location successfully added"
+          },
+          "400": {
+            "description": "Missing required field: name"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/files/list": {
+      "get": {
+        "summary": "List all uploaded PDF files",
+        "tags": [
+          "Files"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of files retrieved successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/files/uploads": {
+      "post": {
+        "summary": "Upload a file",
+        "tags": [
+          "Files"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File successfully deleted"
+          },
+          "404": {
+            "description": "No file part"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/files/{filename}": {
+      "get": {
+        "summary": "Retrieve a file by filename",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File retrieved successfully",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/delete/{filename}": {
+      "delete": {
+        "summary": "Delete a file by filename",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File successfully deleted"
+          },
+          "404": {
+            "description": "File not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/download/{filename}": {
+      "get": {
+        "summary": "Download a file by filename",
+        "tags": [
+          "Files"
+        ],
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File downloaded successfully"
+          },
+          "404": {
+            "description": "File not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Course": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "duration",
+          "area_id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "area_id": {
+            "type": "string"
+          },
+          "location_id": {
+            "type": "string"
+          },
+          "entity_id": {
+            "type": "string"
+          }
+        }
+      },
+      "Area": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Entity": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres_container
+    ports:
+      - 5432:5432
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+
+    environment:
+      POSTGRES_PASSWORD: S3cret
+      POSTGRES_USER: citizix_user
+      POSTGRES_DB: rh_db
+    networks:
+      - project_network  
+
+  adminer:
+    image: adminer
+    container_name: adminer_container
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      - project_network  
+volumes:
+  postgres_data:
+networks:
+  project_network:

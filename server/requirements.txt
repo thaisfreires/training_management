@@ -1,0 +1,10 @@
+pandas
+langchain
+langchain_groq
+fpdf
+python-dotenv
+schedule
+psycopg2
+flask_sqlalchemy
+flask-cors
+flask-swagger-ui
