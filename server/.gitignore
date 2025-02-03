@@ -1,3 +1,4 @@
 .env
 .venv
 .PDFgenerator/*
+.__pycache__
