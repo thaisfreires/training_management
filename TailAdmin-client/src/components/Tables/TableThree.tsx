@@ -10,11 +10,12 @@ const TableThree: React.FC = () => {
   const [files, setFiles] =  useState<FileItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const apiUrl =  process.env.API_URL;
 
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/files/list', {
+        const response = await fetch(`${apiUrl}/files/list`, {
           method: 'GET',
         });
         if(!response.ok) {
@@ -84,7 +85,7 @@ const TableThree: React.FC = () => {
                 </td>
 
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <a href={`http://127.0.0.1:5000/files/${file.filename}`} target="_blank" rel="noopener noreferrer" >
+                  <a href={`${apiUrl}/files/${file.filename}`} target="_blank" rel="noopener noreferrer" >
                   
 
                       <button className="hover:text-primary"
@@ -112,7 +113,7 @@ const TableThree: React.FC = () => {
                 </td>
 
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <a href={`http://127.0.0.1:5000/download/${file.filename}`} target="_blank" rel="noopener noreferrer">
+                  <a href={`${apiUrl}/download/${file.filename}`} target="_blank" rel="noopener noreferrer">
                         <div className="flex items-center space-x-3.5">
                             <button className="hover:text-primary">
                                     <svg

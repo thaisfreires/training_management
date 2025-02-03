@@ -17,11 +17,12 @@ const TableOne = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const apiUrl =  process.env.API_URL;
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/courses',
+        const response = await fetch(`${apiUrl}/courses`,
         );
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
@@ -40,9 +41,9 @@ const TableOne = () => {
   const fetchOptions = async () => {
     try {
       const [locationsRes, entitiesRes, areasRes] = await Promise.all([
-        fetch('http://127.0.0.1:5000/location', { headers: { 'Content-Type': 'application/json' }}),
-        fetch('http://127.0.0.1:5000/entities', { headers: { 'Content-Type': 'application/json' }}),
-        fetch('http://127.0.0.1:5000/area', { headers: { 'Content-Type': 'application/json' }}),
+        fetch(`${apiUrl}/location`, { headers: { 'Content-Type': 'application/json' }}),
+        fetch(`${apiUrl}/entities`, { headers: { 'Content-Type': 'application/json' }}),
+        fetch(`${apiUrl}/area`, { headers: { 'Content-Type': 'application/json' }}),
       ]);
       const locationsData: Option[] = await locationsRes.json();
       const entitiesData: Option[] = await entitiesRes.json();

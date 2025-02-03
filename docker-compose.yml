@@ -1,0 +1,73 @@
+
+
+services:
+  client:
+    build: ./TailAdmin-client
+    container_name: react_container
+    volumes:
+      - ./TailAdmin-client:/app
+      - /app/node_modules
+    ports:
+      - 5174:5173
+    depends_on:
+      - server
+    networks:
+      - project_network
+
+  server:
+    build: ./server
+    container_name: flask_container
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - MAX_WITHOUT_TRAINING=${MAX_WITHOUT_TRAINING}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - RECIPIENT_EMAIL=${RECIPIENT_EMAIL}
+      - SENDER_PASSWORD=${SENDER_PASSWORD}
+    volumes:
+      - ./server:/app      
+    ports:
+      - 5006:5002
+    depends_on:
+      - postgres_database   
+    networks:
+      - project_network
+
+  postgres_database:
+    container_name: postgres_container
+    image: postgres:17-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - MAX_WITHOUT_TRAINING=${MAX_WITHOUT_TRAINING}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - RECIPIENT_EMAIL=${RECIPIENT_EMAIL}
+      - SENDER_PASSWORD=${SENDER_PASSWORD}
+    networks:
+      - project_network
+
+  adminer:
+    image: adminer
+    container_name: adminer_container
+    ports:
+      - 8081:8080
+    depends_on:
+      - postgres_database
+    networks:
+      - project_network  
+volumes:
+  postgres_data:
+networks:
+  project_network:

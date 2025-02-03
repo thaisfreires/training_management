@@ -22,11 +22,12 @@ const Card = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [searchItem, setSearchItem] = useState('');
+  const apiUrl =  process.env.API_URL;
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/courses',
+        const response = await fetch(`${apiUrl}/courses`,
         );
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
@@ -59,7 +60,7 @@ const Card = () => {
 
   const handleDelete = async (id: UUIDTypes) => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/courses/delete/${id}`, { 
+        const response = await fetch(`${apiUrl}/courses/delete/${id}`, { 
           method: 'DELETE',
           headers: { "Content-Type": "application/json" },
         }

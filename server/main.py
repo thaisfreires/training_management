@@ -25,11 +25,12 @@ app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 UPLOAD_FOLDER = os.path.join('.', 'PDF_generator')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg2://citizix_user:S3cret@localhost:5432/rh_db"
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 db = SQLAlchemy(app)
 
 @app.route('/courses', methods=['GET', 'POST'])
 def handle_courses():    
+    print(app.config['SQLALCHEMY_DATABASE_URI'])
     if request.method == 'GET':
        return all_courses()
     if request.method == 'POST':
@@ -381,5 +382,5 @@ def stop_scheduled_job():
     
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5002)
     db.create_all()

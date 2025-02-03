@@ -27,6 +27,7 @@ const UpdateCourse: React.FC = () => {
   const [error, setError] = useState('');
   const courseId = localStorage.getItem('editCourseId');
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const apiUrl =  process.env.API_URL;
 
   const [newData, setNewData] = useState({
     id: uuid(),
@@ -74,7 +75,7 @@ const UpdateCourse: React.FC = () => {
   useEffect(() => {
       const fetchCourse = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:5000/courses/${courseId}`);
+          const response = await fetch(`${apiUrl}/courses/${courseId}`);
           if (!response.ok) {
             throw new Error('Failed to fetch course');
           }
@@ -99,9 +100,9 @@ const UpdateCourse: React.FC = () => {
     const fetchOptions = async () => {
       try {
         const [locationsRes, entitiesRes, areasRes] = await Promise.all([
-          fetch('http://127.0.0.1:5000/location', { headers: { 'Content-Type': 'application/json' }}),
-          fetch('http://127.0.0.1:5000/entities', { headers: { 'Content-Type': 'application/json' }}),
-          fetch('http://127.0.0.1:5000/area', { headers: { 'Content-Type': 'application/json' }}),
+          fetch(`${apiUrl}/location`, { headers: { 'Content-Type': 'application/json' }}),
+          fetch(`${apiUrl}/entities`, { headers: { 'Content-Type': 'application/json' }}),
+          fetch(`${apiUrl}/area`, { headers: { 'Content-Type': 'application/json' }}),
         ]);
         const locationsData: Option[] = await locationsRes.json();
         const entitiesData: Option[] = await entitiesRes.json();
@@ -129,7 +130,7 @@ const UpdateCourse: React.FC = () => {
       let locationId = newData.location_id;
   
       if (!areaId && newData.area_name) {
-        const areaResponse = await fetch('http://127.0.0.1:5000/area', {
+        const areaResponse = await fetch(`${apiUrl}/area`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: newData.area_name }),
@@ -145,7 +146,7 @@ const UpdateCourse: React.FC = () => {
       }
   
       if (!entityId && newData.entity_name) {
-        const entityResponse = await fetch('http://127.0.0.1:5000/entities', {
+        const entityResponse = await fetch(`${apiUrl}/entities`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: newData.entity_name }),
@@ -161,7 +162,7 @@ const UpdateCourse: React.FC = () => {
       }
   
       if (!locationId && newData.location_name) {
-        const locationResponse = await fetch('http://127.0.0.1:5000/location', {
+        const locationResponse = await fetch(`${apiUrl}/location`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: newData.location_name }),
@@ -187,7 +188,7 @@ const UpdateCourse: React.FC = () => {
         location_id: locationId,
       };
       
-      const courseResponse = await fetch(`http://127.0.0.1:5000/courses/update/${courseId}`, {
+      const courseResponse = await fetch(`${apiUrl}/courses/update/${courseId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(courseForm),

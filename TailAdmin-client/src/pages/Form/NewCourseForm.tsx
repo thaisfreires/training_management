@@ -27,7 +27,8 @@ const NewCourseForm: React.FC = () => {
   const [entities, setEntities] = useState<Option[]>([]);
   const [area, setArea] = useState<Option[]>([]);
   const [location, setLocation] = useState<Option[]>([]);
-
+  const apiUrl =  process.env.API_URL;
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
 
@@ -58,9 +59,9 @@ const NewCourseForm: React.FC = () => {
     const fetchOptions = async () => {
       try {
         const [locationsRes, entitiesRes, areasRes] = await Promise.all([
-          fetch('http://127.0.0.1:5000/location', { headers: { 'Content-Type': 'application/json' }}),
-          fetch('http://127.0.0.1:5000/entities', { headers: { 'Content-Type': 'application/json' }}),
-          fetch('http://127.0.0.1:5000/area', { headers: { 'Content-Type': 'application/json' }}),
+          fetch(`${apiUrl}/location`, { headers: { 'Content-Type': 'application/json' }}),
+          fetch(`${apiUrl}/entities`, { headers: { 'Content-Type': 'application/json' }}),
+          fetch(`${apiUrl}/area`, { headers: { 'Content-Type': 'application/json' }}),
         ]);
         const locationsData: Option[] = await locationsRes.json();
         const entitiesData: Option[] = await entitiesRes.json();
@@ -86,7 +87,7 @@ const NewCourseForm: React.FC = () => {
       let locationId = formData.location_id;
   
       if (!areaId && formData.area_name) {
-        const areaResponse = await fetch("http://127.0.0.1:5000/area", {
+        const areaResponse = await fetch(`${apiUrl}/area`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: formData.area_name }),
@@ -102,7 +103,7 @@ const NewCourseForm: React.FC = () => {
       }
 
       if (!entityId && formData.entity_name) {
-        const entityResponse = await fetch("http://127.0.0.1:5000/entities", {
+        const entityResponse = await fetch(`${apiUrl}/entities`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: formData.entity_name }),
@@ -118,7 +119,7 @@ const NewCourseForm: React.FC = () => {
       }
   
       if (!locationId && formData.location_name) {
-        const locationResponse = await fetch("http://127.0.0.1:5000/location", {
+        const locationResponse = await fetch(`${apiUrl}/location`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: formData.location_name }),
@@ -144,7 +145,7 @@ const NewCourseForm: React.FC = () => {
         location_id: locationId,
       };
   
-      const courseResponse = await fetch("http://127.0.0.1:5000/courses", {
+      const courseResponse = await fetch(`${apiUrl}/courses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(courseForm),
