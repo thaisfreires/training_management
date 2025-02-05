@@ -1,4 +1,3 @@
-import subprocess
 import schedule
 import time
 from datetime import datetime
@@ -6,17 +5,20 @@ import threading
 import sys
 
 from AgentTool import start_agent
-print("Python executando job:", sys.executable)
+
+print("Python executing job:", sys.executable)
 
 def job():
+    try:
         start_agent()
+        print("PDF generation completed.")
+    except Exception as e:
+        print(f"Error in start_agent(): {e}")
 
 def start_job():
     print("Scheduled job started")
-
     try:
-        schedule.every(59).seconds.do(job)
-
+        schedule.every(10).seconds.do(job)
         print(f"Running scheduled job at {datetime.now()}")
         def run_scheduler():
             while True:

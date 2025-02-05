@@ -10,9 +10,9 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-
+ 
 load_dotenv()
-
+ 
 MAX_WITHOUT_TRAINING = int(os.getenv('MAX_WITHOUT_TRAINING', 0))
 FILE_PATH_EMPLOYEES = os.path.join('.', 'docs', 'Employees.csv')
 FILE_PATH_TRAINING = os.path.join('.', 'docs', 'Training.csv')
@@ -26,13 +26,13 @@ def read_employee_csv(FILE_PATH_EMPLOYEES, filter_by_date=True):
     employees_df.columns = employees_df.columns.str.strip()
     cols = [col for col in employees_df.columns if 'training' in col.lower() and 'date' in col.lower()]
     last_training_column = cols[0]
-
+ 
     if filter_by_date:
         employees_df[last_training_column] = pd.to_datetime(employees_df[last_training_column])
         three_months_ago = pd.Timestamp.now() - datetime.timedelta(days=MAX_WITHOUT_TRAINING)
-
+ 
         employees_df = employees_df[employees_df[last_training_column] <= three_months_ago]
-
+ 
     sorted_df = employees_df.sort_values(by='Name')
     return sorted_df
  
@@ -41,22 +41,26 @@ def read_training_csv(FILE_PATH_TRAINING):
     df = pd.read_csv(FILE_PATH_TRAINING, sep=';')
     df.columns = df.columns.str.strip()
     return df
-
+ 
 def prepare_prompt(employee, trainings):
+    trainings = read_training_csv(FILE_PATH_TRAINING)
+    
     prompt = f"""
-
-    
-    Acording to this Training Courses List: {", ".join(trainings)}, make assumption on which training courses are the best option for this employee?
-    Please, answer in english and strictly answer only what's inside the following structure:
-
-    
-    Employee: {employee['Name']}
-    Department: {employee['Department']}
-    Suggested Training Courses: 
-    1.
-    2.
-    3.
-    
+    Based solely on the following Training Courses List, determine the best training courses for this employee.  
+    Only use the information provided in the list and do not assume any external knowledge.  
+ 
+    <Training_Courses_List>
+    {trainings}
+    </Training_Courses_List>  
+ 
+    Please provide the answer strictly following this structure:  
+ 
+    Employee: {employee['Name']}  
+    Department: {employee['Department']} 
+    Suggested Training Courses:  
+    1.  
+    2.  
+    3.  
     """
     return prompt
  
@@ -75,22 +79,22 @@ read_trainings_tool = Tool(
 llm = ChatGroq(model="llama3-70b-8192")
 tools = [read_employees_tool, read_trainings_tool]
 initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
-
+ 
 def pdf_generator(txt_file, pdf_file):
         employees=parse_txt_file(txt_file)
-
+ 
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 16)
         pdf.cell(0, 10, ' TRAINING SUGGESTIONS REPORT ', 0, 1, align='C')
         pdf.ln(5)
-
+ 
         for entry in employees:
-
+ 
             pdf.set_font('Arial', 'B', 12)
             pdf.set_x(pdf.l_margin)           
             pdf.cell(0, 10, f"Employee: {entry['Employee']}", 0 ,1)    
-
+ 
             pdf.set_font('Arial', 'B', 12)
             pdf.set_x(pdf.l_margin) 
             pdf.cell(0, 8, f"Department: {entry['Department']}", 0, 1)
@@ -103,19 +107,19 @@ def pdf_generator(txt_file, pdf_file):
         
         pdf.output(pdf_file)
         print(f"------->  PDF saved as: {pdf_file}")
-
+ 
 def parse_txt_file(txt_file):
     employees=[]
     
     with open(txt_file, 'r') as file:
        content=file.read()
     employee_blocks=re.split(r'\n\s*\n', content.strip())
-
+ 
     for block in employee_blocks:
         employee_match = re.search(r'Employee:\s*(.+)', block)
         department_match = re.search(r'Department:\s*(.+)', block)
         training_courses = re.findall(r'\d+\.\s*(.+)', block)
-
+ 
         if employee_match and department_match:
             employee = employee_match.group(1).strip()
             department = department_match.group(1).strip()
@@ -125,34 +129,8 @@ def parse_txt_file(txt_file):
                 "Training": training_courses
             })
     return employees
-        
-employees = read_employee_csv(FILE_PATH_EMPLOYEES).to_dict(orient='records')
-trainings = read_training_csv(FILE_PATH_TRAINING)
-    
-docs_folder = os.path.join('.', 'PDF_generator')
-os.makedirs(docs_folder, exist_ok=True)
-
-base_name_pdf = "TrainingSuggestions"
-pdf_extension = ".pdf"
-unix_time = int(time())
-pdf_file = os.path.join(docs_folder, f"{base_name_pdf}_{unix_time}{pdf_extension}")
-
-txt_extension = ".txt"
-base_name_txt = unix_time
-txt_file = os.path.join(docs_folder, f"{base_name_txt}{txt_extension}")
-
-
-
-for employee in employees:
-    prompt = prepare_prompt(employee, trainings)
-    response = llm.invoke(prompt)    
-    
-    with open(txt_file,"a") as file:
-        file.write(response.content)
-        file.write("\n") 
-    file.close()
-
-
+ 
+ 
 def sendEmail():
     subject = "Monthly Training Suggestions"
     body = (
@@ -166,33 +144,59 @@ def sendEmail():
     )
     sender_email = SENDER_EMAIL
     recipient_email = RECIPIENT_EMAIL
-    sender_password = SENDER_EMAIL
+    sender_password = SENDER_PASSWORD
     smtp_server = 'smtp.gmail.com'
     smtp_port = 465
     path_to_file = os.path.join('.', 'PDF_generator')
     latest_file = max((f for f in os.listdir(path_to_file) if f.endswith('.pdf')),
     key=lambda f: os.path.getmtime(os.path.join(path_to_file, f)))
     latest_file_path = os.path.join(path_to_file, latest_file)
-
+ 
     message = MIMEMultipart()
     message['Subject'] = subject
     message['From'] = sender_email
     message['To'] = recipient_email
     body_part = MIMEText(body)
     message.attach(body_part)
-
+ 
     with open(latest_file_path,'rb') as file:
-        message.attach(MIMEApplication(file.read(), Name="TrainingSuggestions"))
+        message.attach(MIMEApplication(file.read(), Name="TrainingSuggestions.pdf"))
     
     with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, recipient_email, message.as_string())
         print(f"------->  Email generated and sent to: {recipient_email}")
-
-
-def start_agent():
+ 
+def read_files():
     initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
-    pdf_generator(txt_file, pdf_file)
-    sendEmail()    
-
-
+            
+    employees = read_employee_csv(FILE_PATH_EMPLOYEES).to_dict(orient='records')
+    trainings = read_training_csv(FILE_PATH_TRAINING)
+        
+    docs_folder = os.path.join('.', 'PDF_generator')
+    os.makedirs(docs_folder, exist_ok=True)
+ 
+    base_name_pdf = "TrainingSuggestions"
+    pdf_extension = ".pdf"
+    unix_time = int(time())
+    pdf_file = os.path.join(docs_folder, f"{base_name_pdf}_{unix_time}{pdf_extension}")
+ 
+    txt_extension = ".txt"
+    base_name_txt = f"log{unix_time}"
+    txt_file = os.path.join(docs_folder, f"{base_name_txt}{txt_extension}")
+ 
+    for employee in employees:
+        prompt = prepare_prompt(employee, trainings)
+        response = llm.invoke(prompt)    
+        
+        with open(txt_file,"a") as file:
+            file.write(response.content)
+            file.write("\n") 
+        file.close()
+        
+    return txt_file, pdf_file
+ 
+def start_agent():
+    txt_file, pdf_file = read_files()
+    pdf_generator(txt_file, pdf_file )
+    sendEmail()
