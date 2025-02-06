@@ -85,7 +85,6 @@ def add_course():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        logging.error(f"Unexpected error in add_course: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/courses/<id>', methods=['GET'])
@@ -108,11 +107,9 @@ def delete_course(id:UUID):
 
                 if not course_to_delete:
                     return jsonify({"error": f"Course with ID {id} not found"}), 404
-
+                
                 db.delete(course_to_delete)
                 db.commit()
-
-                logging.info(f"Course with ID {id} deleted successfully")
                 
                 return jsonify({"message": f"Course with ID {id} deleted successfully"}), 200
             
@@ -133,7 +130,6 @@ def edit_course(id:UUID):
         except ValueError as e:
             return jsonify({"error": str(e)}), 400
         except Exception as e:
-            logging.error(f"Unexpected error in edit_course: {str(e)}")
             return jsonify({"error": "Internal server error"}), 500   
 
 @app.route('/entities', methods=['GET', 'POST'] )
@@ -161,7 +157,7 @@ def all_entities():
         ]
         return jsonify(entities_list), 200
     except Exception as e:
-        logging.error(f"Unexpected error in all_entities: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500  
 
 def add_entity():
    with next(get_db()) as db:
@@ -177,7 +173,6 @@ def add_entity():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        logging.error(f"Unexpected error in add_entity: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
     
 @app.route('/area', methods=['GET', 'POST'] )
@@ -204,8 +199,7 @@ def all_area():
         ]
         return jsonify(area_list), 200
     except Exception as e:
-        logging.error(f"Unexpected error in all_area: {str(e)}")
-
+        return jsonify({"error": "Internal server error"}), 500     
 def add_area():
    with next(get_db()) as db:
     data = request.get_json()
@@ -217,7 +211,6 @@ def add_area():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        logging.error(f"Unexpected error in add_area: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/location', methods=['GET', 'POST'] )
@@ -243,7 +236,7 @@ def all_location():
         ]
         return jsonify(location_list), 200
     except Exception as e:
-        logging.error(f"Unexpected error in add_area: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500  
 
 def add_location():
    with next(get_db()) as db:
@@ -258,7 +251,6 @@ def add_location():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        logging.error(f"Unexpected error in add_location: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
 
@@ -294,7 +286,6 @@ def upload_file():
             }
         return jsonify({"message": f"File {file.filename} uploaded successfully"}), 200
     except Exception as e:
-        logging.error(f"Unexpected error in upload_file: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/files/list', methods=['GET'])
@@ -317,7 +308,6 @@ def list_files():
                 
             return jsonify(file_list,200)
         except Exception as e:
-            logging.error(f"Unexpected error in list_files: {str(e)}")
             return jsonify({"error": "Internal server error"}), 500
         
 @app.route('/files/<filename>', methods=['GET'])
@@ -336,7 +326,6 @@ def get_file(filename):
         return response
 
     except Exception as e:
-        logging.error(f"Unexpected error in get_file: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
     
 @app.route('/files/delete/<filename>', methods=['DELETE'])
@@ -356,7 +345,6 @@ def download(filename):
     try:       
         return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
     except FileNotFoundError:
-        logging.error(f"Unexpected error in download(filename)")
         return jsonify({"error": "File not found"}), 404
    
 @app.route('/test', methods=['GET'])

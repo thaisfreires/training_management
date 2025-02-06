@@ -32,6 +32,15 @@ function App() {
   ) : (
     <DefaultLayout>
       <Routes>
+      <Route
+          path="/"
+          element={
+            <>
+              <PageTitle title="Dashboard" />
+              <HomePage />
+            </>
+          }
+        />
         <Route
           path="/dashboard"
           element={
