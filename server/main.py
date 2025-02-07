@@ -298,7 +298,7 @@ def list_files():
             for filename in files:
                 if filename.lower().endswith('.pdf'):
                     file_path = os.path.join(UPLOAD_FOLDER, filename)
-                    upload_date = datetime.date.fromtimestamp(os.path.getmtime(file_path))
+                    upload_date = datetime.datetime.fromtimestamp(os.path.getmtime(file_path))
                     file_list.append({
                         'filename': filename,
                         'fileUrl': f"download/{filename}",

@@ -15,7 +15,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Helder Oliveira
+            John Doe
           </span>
           <span className="block text-xs">Developer</span>
         </span>

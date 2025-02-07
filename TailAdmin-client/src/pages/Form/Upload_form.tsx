@@ -100,7 +100,7 @@ const UploadFilesForm: React.FC = () => {
                   </button>
                 </form>
 
-                {/* Display uploaded file metadata */}
+                
                 {uploadError && <div className="text-red-500 mt-4">{uploadError}</div>}
                 {uploadedFileData && (
                   <div className="mt-4 border-t pt-4">

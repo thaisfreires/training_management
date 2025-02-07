@@ -425,6 +425,7 @@ const UpdateCourse: React.FC = () => {
                       type="submit"
                       className="mt-6 inline-flex items-center justify-center rounded bg-primary py-3 px-10 font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-dark"
                     >
+                      {' '}
                       Update Course
                     </button>
                   </div>
