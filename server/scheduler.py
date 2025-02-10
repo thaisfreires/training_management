@@ -18,7 +18,7 @@ def job():
 def start_job():
     print("Scheduled job started")
     try:
-        schedule.every(10).seconds.do(job)
+        schedule.every(12).weeks.do(job)
         print(f"Running scheduled job at {datetime.now()}")
         def run_scheduler():
             while True:

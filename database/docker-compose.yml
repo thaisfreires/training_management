@@ -10,9 +10,17 @@ services:
       - "postgres_data:/var/lib/postgresql/data"
 
     environment:
-      POSTGRES_PASSWORD: S3cret
-      POSTGRES_USER: citizix_user
-      POSTGRES_DB: rh_db
+      - DATABASE_URL= ${DATABASE_URL}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - MAX_WITHOUT_TRAINING=${MAX_WITHOUT_TRAINING}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - RECIPIENT_EMAIL=${RECIPIENT_EMAIL}
+      - SENDER_PASSWORD=${SENDER_PASSWORD}
     networks:
       - project_network  
 

@@ -18,6 +18,7 @@ services:
     build: ./server
     container_name: flask_container
     environment:
+      - DATABASE_URL= ${DATABASE_URL}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -62,7 +63,7 @@ services:
     image: adminer
     container_name: adminer_container
     ports:
-      - 8081:8080
+      - 8080:8080
     depends_on:
       - postgres_database
     networks:
