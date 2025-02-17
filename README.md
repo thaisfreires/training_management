@@ -7,10 +7,10 @@
 ![postgresql](https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-257bd6?style=for-the-badge&logo=docker&logoColor=white)
 
-## 🚀Overview
+## 🚀 Overview
 This project is a platform designed to assist HR departments in managing employee training efficiently. The platform leverages AI to generate monthly training suggestions tailored to each department's needs, converts them into PDF reports, and automatically sends them to HR every three months. Additionally, HR staff can access AI-generated reports, manage available training courses, and interact with the system seamlessly.
 
-## 🛠️Features
+## 🛠️ Features
 - **AI-Powered Training Suggestions**: Automatically generates monthly training recommendations based on departmental needs.
 - **Automated Report Generation**: Converts AI-generated suggestions into PDFs and sends them to HR quarterly.
 - **Course Management**: HR staff can view and download report files, they can also view, add, update, and delete training courses.
@@ -18,10 +18,12 @@ This project is a platform designed to assist HR departments in managing employe
 - **Backend Efficiency**: A Flask-based backend with PostgreSQL and SQLAlchemy for database management.
 - **Containerized Deployment**: Utilizes Docker for streamlined database management and scalability.
 
-## 📝Architecture Diagram
+## 📝 Architecture Diagram
 
-to be posted.
+[Activity Diagram](docs/activity_diagram.png)
 
+## 📝 API Documentation
+[API Swagger](https://thaisfreires.github.io/training_management/)
 
 ## Setup Instructions
 
@@ -33,11 +35,9 @@ If you'd like to run this project locally or make changes, follow the instructio
 2. Make sure Docker and Docker Compose are installed.
 3. Run `docker-compose up --build` to build and start all the services.
 
-
-## 🚧To be implemented: 
-- users management from database
-- employees management from database
-- sign in/out pages
-- profile page
-- employee management page
+## 🚧 To be implemented 
+- Users management from database
+- Employees management from database
+- Sign in/out pages
+- Profile page
 
