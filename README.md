@@ -23,17 +23,6 @@ This project is a platform designed to assist HR departments in managing employe
 to be posted.
 
 
-## 💻Services and Links
-
-1. **Frontend**: 
-   - URL: [https://your-frontend-render-url](https://training-management-client.onrender.com)
-   - Description: This is the frontend of the application, built with React and Tailwind.
-
-2. **Backend**:
-   - URL: [https://your-backend-render-url](https://training-management-server.onrender.com)
-   - Description: The backend, built with Flask, communicates with the PostgreSQL database in the cloud.
-
-
 ## Setup Instructions
 
 If you'd like to run this project locally or make changes, follow the instructions below:
